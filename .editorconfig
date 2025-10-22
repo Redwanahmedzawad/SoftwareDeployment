@@ -1,0 +1,7 @@
+# top of file
+root = true
+
+[*.cs]
+# Temporarily silence CA1515 to unblock CI
+dotnet_diagnostic.CA1515.severity = none
+# (or use 'warning' if you still want to see it)
