@@ -108,3 +108,4 @@
 /home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/obj/Debug/net8.0/Verisys.Api.pdb
 /home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/obj/Debug/net8.0/Verisys.Api.genruntimeconfig.cache
 /home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/obj/Debug/net8.0/ref/Verisys.Api.dll
+/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/obj/Debug/net8.0/Verisys.Api.sourcelink.json
