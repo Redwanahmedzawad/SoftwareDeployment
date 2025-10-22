@@ -10,11 +10,11 @@
         "projectUniqueName": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/Verisys.Api.csproj",
         "projectName": "Verisys.Api",
         "projectPath": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/Verisys.Api.csproj",
-        "packagesPath": "/root/.nuget/packages/",
+        "packagesPath": "/home/zawad/.nuget/packages/",
         "outputPath": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/root/.nuget/NuGet/NuGet.Config"
+          "/home/zawad/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
