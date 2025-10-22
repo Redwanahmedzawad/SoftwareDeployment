@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wVEIj3goWJxfHk/d4TWRPwWVNegaitHJa9tUWCvz4GMLL0MqnkGpgJm/1NWbuWN7Uy+2pc7n3I1oe+qzJgnrDA==",
+  "dgSpecHash": "LiHFJuKB8gvGf9+55gVuxLSOp1F/3VOiAq/DCDyKtHNzHXq1kOOvpsxw8pBFxOGTsA/ESaOEaFnQefeojzewKw==",
   "success": true,
   "projectFilePath": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/Verisys.Api.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,6 @@
     "/home/zawad/.nuget/packages/microsoft.codeanalysis.common/4.5.0/microsoft.codeanalysis.common.4.5.0.nupkg.sha512",
     "/home/zawad/.nuget/packages/microsoft.codeanalysis.csharp/4.5.0/microsoft.codeanalysis.csharp.4.5.0.nupkg.sha512",
     "/home/zawad/.nuget/packages/microsoft.codeanalysis.csharp.workspaces/4.5.0/microsoft.codeanalysis.csharp.workspaces.4.5.0.nupkg.sha512",
-    "/home/zawad/.nuget/packages/microsoft.codeanalysis.netanalyzers/8.0.0/microsoft.codeanalysis.netanalyzers.8.0.0.nupkg.sha512",
     "/home/zawad/.nuget/packages/microsoft.codeanalysis.workspaces.common/4.5.0/microsoft.codeanalysis.workspaces.common.4.5.0.nupkg.sha512",
     "/home/zawad/.nuget/packages/microsoft.entityframeworkcore/8.0.10/microsoft.entityframeworkcore.8.0.10.nupkg.sha512",
     "/home/zawad/.nuget/packages/microsoft.entityframeworkcore.abstractions/8.0.10/microsoft.entityframeworkcore.abstractions.8.0.10.nupkg.sha512",

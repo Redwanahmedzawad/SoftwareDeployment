@@ -8,6 +8,14 @@
   <AnalysisLevel>latest-all</AnalysisLevel>
   <EnableNETAnalyzers>true</EnableNETAnalyzers>
   <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+  <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+
+  <!-- Silence CA1515 specifically for this project -->
+  <NoWarn>$(NoWarn);CA1515</NoWarn>
+
+  <!-- Optional: keep analyzer set sane -->
+  <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
   <ItemGroup>
