@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "PMV4gqvDdYVccBcvAxsIRnD+O7wUYtaHvm1fyTHyBpw=",
+  "Source": "Verisys.Api",
+  "BasePath": "_content/Verisys.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,1 @@
+{"root":["./src/main.ts","./src/types.ts","./src/lib/api.ts","./src/services/tasks.ts","./src/App.vue","./src/components/KanbanBoard.vue"],"version":"5.9.3"}
