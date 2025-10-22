@@ -1,17 +1,14 @@
-<PropertyGroup>
-  <TargetFramework>net8.0</TargetFramework>
-  <Nullable>enable</Nullable>
-  <ImplicitUsings>enable</ImplicitUsings>
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <!-- Keep analyzers on, but DO NOT fail the build on warnings -->
-  <EnableNETAnalyzers>true</EnableNETAnalyzers>
-  <AnalysisLevel>latest</AnalysisLevel>
-  <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-  <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
-
-  <!-- Explicitly silence this rule for this project -->
-  <NoWarn>$(NoWarn);CA1515</NoWarn>
-</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  <AnalysisLevel>latest-all</AnalysisLevel>
+  <EnableNETAnalyzers>false</EnableNETAnalyzers>
+  <CodeAnalysisTreatWarningsAsErrors>flase</CodeAnalysisTreatWarningsAsErrors>
+  </PropertyGroup>
 
   <ItemGroup>
   <Compile Update="Migrations\**\*.cs">
@@ -27,7 +24,6 @@
 
     <!-- Npgsql EF provider compatible with EF 8.x -->
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
-
     <!-- Swagger -->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.0" />
   </ItemGroup>
