@@ -17,7 +17,7 @@ jobs:
         with:
           images: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}
           tags: |
-            type=sha,format=long
+            type=sha,format=long        # => sha-<full_sha>
             type=raw,value=latest
 
       - name: Login to Docker Hub
@@ -49,13 +49,16 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Point TEST to new image
+      - name: Point TEST to new image (sha tag)
         run: |
-          IMG="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}:${{ github.sha }}"
+          IMG="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}:sha-${{ github.sha }}"
           az webapp config container set \
             --resource-group "${{ vars.RG_TEST }}" \
             --name "${{ vars.APP_NAME }}-test" \
-            --container-image-name "$IMG"
+            --container-image-name "$IMG" \
+            --container-registry-url https://index.docker.io \
+            --container-registry-user "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --container-registry-password "${{ secrets.DOCKERHUB_TOKEN }}"
 
       - name: Configure TEST app settings (DB + port)
         run: |
@@ -63,12 +66,11 @@ jobs:
             --resource-group "${{ vars.RG_TEST }}" \
             --name "${{ vars.APP_NAME }}-test" \
             --settings \
-              ConnectionStrings__Default='${{ secrets.DB_CONNECTION_STRING }}' \
+              "ConnectionStrings__Default=${{ secrets.DB_CONNECTION_STRING }}" \
               WEBSITES_PORT=${{ vars.PORT }} \
               PORT=${{ vars.PORT }} \
               ASPNETCORE_URLS="http://0.0.0.0:${{ vars.PORT }}" \
-              WEBSITES_ENABLE_APP_SERVICE_STORAGE=false \
-              MIGRATE_DB=false
+              WEBSITES_ENABLE_APP_SERVICE_STORAGE=false
 
       - name: Restart TEST
         run: az webapp restart --resource-group "${{ vars.RG_TEST }}" --name "${{ vars.APP_NAME }}-test"
@@ -102,14 +104,17 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Point STAGING to new image
+      - name: Point STAGING to new image (sha tag)
         run: |
-          IMG="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}:${{ github.sha }}"
+          IMG="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}:sha-${{ github.sha }}"
           az webapp config container set \
             --resource-group "${{ vars.RG_PROD }}" \
             --name "${{ vars.APP_NAME }}" \
             --slot staging \
-            --container-image-name "$IMG"
+            --container-image-name "$IMG" \
+            --container-registry-url https://index.docker.io \
+            --container-registry-user "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --container-registry-password "${{ secrets.DOCKERHUB_TOKEN }}"
 
       - name: Configure STAGING app settings (DB + port)
         run: |
@@ -118,12 +123,11 @@ jobs:
             --name "${{ vars.APP_NAME }}" \
             --slot staging \
             --settings \
-              ConnectionStrings__Default='${{ secrets.DB_CONNECTION_STRING }}' \
+              "ConnectionStrings__Default=${{ secrets.DB_CONNECTION_STRING }}" \
               WEBSITES_PORT=${{ vars.PORT }} \
               PORT=${{ vars.PORT }} \
               ASPNETCORE_URLS="http://0.0.0.0:${{ vars.PORT }}" \
-              WEBSITES_ENABLE_APP_SERVICE_STORAGE=false \
-              MIGRATE_DB=false
+              WEBSITES_ENABLE_APP_SERVICE_STORAGE=false
 
       - name: Restart STAGING
         run: az webapp restart --resource-group "${{ vars.RG_PROD }}" --name "${{ vars.APP_NAME }}" --slot staging
