@@ -56,10 +56,6 @@ jobs:
             --resource-group "${{ vars.RG_TEST }}" \
             --name "${{ vars.APP_NAME }}-test" \
             --container-image-name "$IMG"
-            # For private repos, uncomment below:
-            # --container-registry-url https://index.docker.io \
-            # --container-registry-user "${{ secrets.DOCKERHUB_USERNAME }}" \
-            # --container-registry-password "${{ secrets.DOCKERHUB_TOKEN }}"
 
       - name: Configure TEST app settings (DB + port)
         run: |
@@ -113,10 +109,6 @@ jobs:
             --name "${{ vars.APP_NAME }}" \
             --slot staging \
             --container-image-name "$IMG"
-            # For private repos, uncomment below:
-            # --container-registry-url https://index.docker.io \
-            # --container-registry-user "${{ secrets.DOCKERHUB_USERNAME }}" \
-            # --container-registry-password "${{ secrets.DOCKERHUB_TOKEN }}"
 
       - name: Configure STAGING app settings (DB + port)
         run: |
