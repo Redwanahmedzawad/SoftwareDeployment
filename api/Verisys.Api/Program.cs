@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Verisys.Api.Data;
 using Verisys.Api.Models;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,13 @@ builder.Services.AddDbContext<AppDb>(o => o.UseNpgsql(conn));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.Configure<ApplicationInsightsServiceOptions>(o =>
+{
+    o.EnableAdaptiveSampling = false;
+    o.EnableEventCounterCollectionModule = true;
+});
+
+
 
 var app = builder.Build();
 
