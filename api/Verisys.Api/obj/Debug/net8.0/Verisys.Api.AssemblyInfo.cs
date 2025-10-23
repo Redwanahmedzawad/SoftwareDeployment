@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Verisys.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73d28e2e333685cd3a0f9c76aca273b094b75d71")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ce8ad7a9feecc36b6550d4a18f9bff96e4e84dc7")]
 [assembly: System.Reflection.AssemblyProductAttribute("Verisys.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Verisys.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

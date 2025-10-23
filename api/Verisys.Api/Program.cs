@@ -25,7 +25,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.Configure<ApplicationInsightsServiceOptions>(o =>
 {
-    o.EnableAdaptiveSampling = false;
+    o.EnableAdaptiveSampling = true;
     o.EnableEventCounterCollectionModule = true;
 });
 
