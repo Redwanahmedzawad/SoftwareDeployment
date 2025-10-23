@@ -6710,19 +6710,19 @@
     ]
   },
   "packageFolders": {
-    "/root/.nuget/packages/": {}
+    "/Users/shihabashfaq/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj",
+      "projectUniqueName": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj",
       "projectName": "Verisys.Api.UnitTests",
-      "projectPath": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj",
-      "packagesPath": "/root/.nuget/packages/",
-      "outputPath": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api.UnitTests/obj/",
+      "projectPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj",
+      "packagesPath": "/Users/shihabashfaq/.nuget/packages/",
+      "outputPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api.UnitTests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/root/.nuget/NuGet/NuGet.Config"
+        "/Users/shihabashfaq/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -6734,8 +6734,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/Verisys.Api.csproj": {
-              "projectPath": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/Verisys.Api.csproj"
+            "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/Verisys.Api.csproj": {
+              "projectPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/Verisys.Api.csproj"
             }
           }
         }
@@ -6744,7 +6744,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -6795,7 +6801,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.121/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

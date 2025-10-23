@@ -1253,7 +1253,10 @@
           "Swashbuckle.AspNetCore": "8.1.0"
         },
         "runtime": {
-          "Verisys.Api.dll": {}
+          "Verisys.Api.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
