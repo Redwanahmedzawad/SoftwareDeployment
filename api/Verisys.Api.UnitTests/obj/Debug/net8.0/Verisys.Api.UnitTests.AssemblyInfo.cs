@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Verisys.Api.UnitTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9784dac134a6b25d5966647be7e2f243ed0362b7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aafa8aed24686944570c044e5e4aa17a9382dc2c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Verisys.Api.UnitTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Verisys.Api.UnitTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

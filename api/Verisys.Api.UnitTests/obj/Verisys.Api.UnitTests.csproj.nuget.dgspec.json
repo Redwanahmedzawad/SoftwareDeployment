@@ -1,33 +1,40 @@
 {
   "format": 1,
   "restore": {
-    "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj": {}
+    "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api.UnitTests\\Verisys.Api.UnitTests.csproj": {}
   },
   "projects": {
-    "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj": {
+    "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api.UnitTests\\Verisys.Api.UnitTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj",
+        "projectUniqueName": "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api.UnitTests\\Verisys.Api.UnitTests.csproj",
         "projectName": "Verisys.Api.UnitTests",
-        "projectPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj",
-        "packagesPath": "/Users/shihabashfaq/.nuget/packages/",
-        "outputPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api.UnitTests/obj/",
+        "projectPath": "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api.UnitTests\\Verisys.Api.UnitTests.csproj",
+        "packagesPath": "C:\\Users\\shiha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api.UnitTests\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/shihabashfaq/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\shiha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/Verisys.Api.csproj": {
-                "projectPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/Verisys.Api.csproj"
+              "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api\\Verisys.Api.csproj": {
+                "projectPath": "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api\\Verisys.Api.csproj"
               }
             }
           }
@@ -93,26 +100,33 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.306/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/Verisys.Api.csproj": {
+    "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api\\Verisys.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/Verisys.Api.csproj",
+        "projectUniqueName": "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api\\Verisys.Api.csproj",
         "projectName": "Verisys.Api",
-        "projectPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/Verisys.Api.csproj",
-        "packagesPath": "/Users/shihabashfaq/.nuget/packages/",
-        "outputPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/obj/",
+        "projectPath": "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api\\Verisys.Api.csproj",
+        "packagesPath": "C:\\Users\\shiha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shiha\\devmaster\\api\\Verisys.Api\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/shihabashfaq/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\shiha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -137,6 +151,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.ApplicationInsights.AspNetCore": {
+              "target": "Package",
+              "version": "[2.23.0, )"
+            },
             "Microsoft.CodeAnalysis.NetAnalyzers": {
               "suppressParent": "All",
               "target": "Package",
@@ -184,7 +202,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.306/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
