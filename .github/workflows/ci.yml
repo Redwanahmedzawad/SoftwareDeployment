@@ -6,7 +6,25 @@ on:
   workflow_dispatch:
 
 jobs:
+  test_backend:
+    name: Run .NET Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'   # or 8.0.x, depending on your project
+
+      - name: Restore dependencies
+        run: dotnet restore ./api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj
+
+      - name: Run tests
+        run: dotnet test ./api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj --no-build --verbosity normal
   build_and_push:
+    needs: test_backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
