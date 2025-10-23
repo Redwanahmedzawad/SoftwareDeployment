@@ -1,0 +1,103 @@
+/* Root theme tokens inspired by your Figma export */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
+  --radius: 14px;
+
+  /* App-specific */
+  --lane-gap: 1rem;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 5.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 5.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 224.3 76.3% 48%;
+}
+
+/* Base reset-ish */
+html, body, #app { height: 100%; }
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Cards & surfaces */
+.card {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+}
+
+/* Utilities used by components */
+.u-flex { display: flex; }
+.u-center { display:flex; align-items:center; justify-content:center; }
+.u-gap-2 { gap: .5rem; }
+.u-gap-3 { gap: .75rem; }
+.u-gap-4 { gap: 1rem; }
+.u-grid { display: grid; }
+.u-grid-auto { grid-auto-rows: min-content; }
+.u-grid-gap { gap: var(--lane-gap); }
+.u-text-muted { color: hsl(var(--muted-foreground)); }
+.u-muted { background-color: hsl(var(--muted)); }
+
+/* Buttons */
+.btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  height: 2.5rem; padding: 0 1rem; border-radius: calc(var(--radius) - 6px);
+  font-weight: 600; border: 1px solid transparent; transition: .15s ease;
+}
+.btn-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+.btn-outline { background: transparent; border-color: hsl(var(--border)); color: hsl(var(--foreground)); }
+.btn-ghost { background: transparent; color: hsl(var(--foreground)); }
+.btn:hover { filter: brightness(0.98); }
+
+.input {
+  height: 2.5rem; border-radius: calc(var(--radius) - 8px);
+  border: 1px solid hsl(var(--input)); background: hsl(var(--card)); color: inherit; padding: 0 .75rem;
+}
+
+.badge { display:inline-flex; align-items:center; height:1.5rem; padding:0 .5rem; border-radius:999px; font-size:.75rem; border:1px solid hsl(var(--border)); }
+.badge-success { background: hsl(141 78% 96%); color: hsl(142 71% 25%); border-color: hsl(142 30% 80%); }
+.badge-warn { background: hsl(49 95% 96%); color: hsl(35 92% 33%); border-color: hsl(49 70% 80%); }
+.badge-danger { background: hsl(0 85% 96%); color: hsl(0 72% 35%); border-color: hsl(0 60% 78%); }
+
+.progress {
+  position: relative; height: .5rem; width: 100%; border-radius: 999px; background: hsl(var(--muted)); overflow:hidden; border:1px solid hsl(var(--border));
+}
+.progress > span { position:absolute; inset:0; width: var(--value, 0%); background: hsl(var(--primary)); }

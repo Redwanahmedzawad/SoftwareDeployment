@@ -36,10 +36,18 @@ app.MapPut("/api/tasks/{id:int}", async (int id, AppDb db, TaskItem updated) =>
 {
     var existing = await db.Tasks.FirstOrDefaultAsync(t => t.Id == id).ConfigureAwait(false);
     if (existing is null) return Results.NotFound();
-    db.Entry(existing).CurrentValues.SetValues(updated);
+
+    // ✅ Only update non-key fields using EF's value API (works with init-only)
+    db.Entry(existing).CurrentValues.SetValues(new
+    {
+        Title  = updated.Title,
+        Status = updated.Status
+    });
+
     await db.SaveChangesAsync().ConfigureAwait(false);
     return Results.NoContent();
 });
+
 
 app.MapDelete("/api/tasks/{id:int}", async (int id, AppDb db) =>
 {

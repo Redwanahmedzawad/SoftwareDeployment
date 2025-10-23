@@ -3190,19 +3190,19 @@
     ]
   },
   "packageFolders": {
-    "/home/zawad/.nuget/packages/": {}
+    "/Users/shihabashfaq/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/Verisys.Api.csproj",
+      "projectUniqueName": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/Verisys.Api.csproj",
       "projectName": "Verisys.Api",
-      "projectPath": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/Verisys.Api.csproj",
-      "packagesPath": "/home/zawad/.nuget/packages/",
-      "outputPath": "/home/zawad/Projects/Soft Deploy and evolution/verisys/api/Verisys.Api/obj/",
+      "projectPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/Verisys.Api.csproj",
+      "packagesPath": "/Users/shihabashfaq/.nuget/packages/",
+      "outputPath": "/Users/shihabashfaq/SoftwareDeployment/api/Verisys.Api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/zawad/.nuget/NuGet/NuGet.Config"
+        "/Users/shihabashfaq/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3221,7 +3221,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -3266,6 +3272,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.21, 8.0.21]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.osx-arm64",
+            "version": "[8.0.21, 8.0.21]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.21, 8.0.21]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -3274,7 +3294,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.121/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
