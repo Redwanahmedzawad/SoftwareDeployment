@@ -20,6 +20,7 @@ if (string.IsNullOrWhiteSpace(conn))
 builder.Services.AddDbContext<AppDb>(o => o.UseNpgsql(conn));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
