@@ -15,7 +15,7 @@ public class TaskItemTests
         task.Id.Should().Be(1);
         task.Title.Should().Be("Test Task");
         task.Status.Should().Be("todo");
-        task.Status.Should().Be("done");
+        
     }
 
     [Fact]
