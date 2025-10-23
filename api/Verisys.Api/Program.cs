@@ -4,20 +4,28 @@ using Verisys.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ----- Connection string (appsettings OR env var) -----
-var conn =
-    builder.Configuration.GetConnectionString("Default") ??
-    Environment.GetEnvironmentVariable("ConnectionStrings__Default");
-
-if (string.IsNullOrWhiteSpace(conn))
-{
-    throw new InvalidOperationException(
-        "ConnectionStrings__Default is not configured. " +
-        "Set it in appsettings.json for local, or as an App Setting in Azure.");
-}
-
 // ----- Services -----
-builder.Services.AddDbContext<AppDb>(o => o.UseNpgsql(conn));
+if (builder.Environment.IsEnvironment("Testing"))
+{
+    builder.Services.AddDbContext<AppDb>(options =>
+        options.UseInMemoryDatabase("TestingDb"));
+}
+else
+{
+    // ----- Connection string (appsettings OR env var) -----
+    var conn =
+        builder.Configuration.GetConnectionString("Default") ??
+        Environment.GetEnvironmentVariable("ConnectionStrings__Default");
+
+    if (string.IsNullOrWhiteSpace(conn))
+    {
+        throw new InvalidOperationException(
+            "ConnectionStrings__Default is not configured. " +
+            "Set it in appsettings.json for local, or as an App Setting in Azure.");
+    }
+
+    builder.Services.AddDbContext<AppDb>(o => o.UseNpgsql(conn));
+}
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
