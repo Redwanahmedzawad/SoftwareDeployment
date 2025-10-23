@@ -43,12 +43,15 @@ jobs:
 
       - name: Test (Unit)
         if: ${{ hashFiles('Verisys.Api.UnitTests/*.csproj') != '' }}
-        run: dotnet test Verisys.Api.UnitTests -c Release --no-build --logger "trx;LogFileName=unit.trx"
+        run: dotnet test Verisys.Api.UnitTests -c Release --no-build \
+          --logger "trx;LogFileName=unit.trx" \
+          --results-directory ./TestResults/Unit
 
       - name: Test (Integration)
-        if: ${{ hashFiles('Verisys.Api.Integration Tests/*.csproj') != '' }}
-        run: dotnet test "Verisys.Api.Integration Tests" -c Release --no-build --logger "trx;LogFileName=integration.trx"
-
+        if: ${{ hashFiles('Verisys.Api.IntegrationTests/*.csproj') != '' }}
+        run: dotnet test Verisys.Api.IntegrationTests -c Release --no-build \
+          --logger "trx;LogFileName=integration.trx" \
+          --results-directory ./TestResults/Integration
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4

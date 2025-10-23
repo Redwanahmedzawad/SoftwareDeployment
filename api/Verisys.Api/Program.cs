@@ -51,11 +51,18 @@ app.MapDelete("/api/tasks/{id:int}", async (int id, AppDb db) =>
 });
 
 // Dev convenience: migrate DB on startup (safe for local)
+// Dev convenience: migrate DB on startup (safe for local)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDb>();
-    db.Database.Migrate();
+
+    // Skip migrations when running integration tests
+    if (!app.Environment.IsEnvironment("Testing"))
+    {
+        db.Database.Migrate();
+    }
 }
+
 
 app.Run();
 
