@@ -23,8 +23,35 @@ jobs:
 
       - name: Run tests
         run: dotnet test ./api/Verisys.Api.UnitTests/Verisys.Api.UnitTests.csproj --no-build --verbosity normal
+  test_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Node & cache for faster installs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: web/verisys-web/package-lock.json
+
+      - name: Install deps (frontend)
+        working-directory: web/verisys-web
+        run: npm ci
+
+      - name: Run frontend tests
+        env:
+          CI: "true"          # makes Vitest/Jest run once + fail fast in CI
+        working-directory: web/verisys-web
+        run: |
+          # Prefer package.json "test" script; falls back to vitest if needed
+          if npm run | grep -q "^  test"; then
+            npm test -- --run
+          else
+            npx vitest run
+          fi
   build_and_push:
-    needs: test_backend
+    needs: [test_backend, test_frontend]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
