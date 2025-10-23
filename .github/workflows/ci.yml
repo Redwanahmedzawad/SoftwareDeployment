@@ -2,7 +2,7 @@ name: CI-CD
 
 on:
   push:
-    branches: ["rollback-portfix"]
+    branches: ["master"]
   workflow_dispatch:
 
 jobs:
