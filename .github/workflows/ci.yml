@@ -34,42 +34,42 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
 
   deploy_test:
-  needs: build_and_push
-  runs-on: ubuntu-latest
-  permissions:
-    id-token: write
-    contents: read
-  steps:
-    - uses: actions/checkout@v4
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
 
-    - name: Azure login (OIDC)
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Point TEST to new image
-      run: |
-        IMG="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}:${{ github.sha }}"
-        az webapp config container set \
-          --resource-group "${{ vars.RG_TEST }}" \
-          --name "${{ vars.APP_NAME }}-test" \
-          --container-image-name "$IMG"
+      - name: Point TEST to new image
+        run: |
+          IMG="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}:${{ github.sha }}"
+          az webapp config container set \
+            --resource-group "${{ vars.RG_TEST }}" \
+            --name "${{ vars.APP_NAME }}-test" \
+            --container-image-name "$IMG"
 
-    - name: Configure app settings (port)
-      run: |
-        echo "Setting port to ${{ vars.PORT }}"
-        az webapp config appsettings set \
-          --resource-group "${{ vars.RG_TEST }}" \
-          --name "${{ vars.APP_NAME }}-test" \
-          --settings WEBSITES_PORT=${{ vars.PORT }} PORT=${{ vars.PORT }} WEBSITES_ENABLE_APP_SERVICE_STORAGE=false
+      - name: Configure app settings (port)
+        run: |
+          echo "Setting port to ${{ vars.PORT }}"
+          az webapp config appsettings set \
+            --resource-group "${{ vars.RG_TEST }}" \
+            --name "${{ vars.APP_NAME }}-test" \
+            --settings WEBSITES_PORT=${{ vars.PORT }} PORT=${{ vars.PORT }} WEBSITES_ENABLE_APP_SERVICE_STORAGE=false
 
-    - name: Restart TEST
-      run: az webapp restart --resource-group "${{ vars.RG_TEST }}" --name "${{ vars.APP_NAME }}-test"
+      - name: Restart TEST
+        run: az webapp restart --resource-group "${{ vars.RG_TEST }}" --name "${{ vars.APP_NAME }}-test"
 
-    - name: Health check
-      run: curl -f https://${{ vars.APP_NAME }}-test.azurewebsites.net/healthz
+      - name: Health check
+        run: curl -f https://${{ vars.APP_NAME }}-test.azurewebsites.net/healthz
 
   deploy_staging:
     needs: deploy_test
@@ -80,27 +80,36 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+
       - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      - name: Point STAGING to new image and set port
+
+      - name: Point STAGING to new image
         run: |
           IMG="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}:${{ github.sha }}"
           az webapp config container set \
             --resource-group "${{ vars.RG_PROD }}" \
             --name "${{ vars.APP_NAME }}" \
             --slot staging \
-            --docker-custom-image-name "$IMG"
+            --container-image-name "$IMG"
+
+      - name: Configure app settings (port)
+        run: |
           az webapp config appsettings set \
             --resource-group "${{ vars.RG_PROD }}" \
             --name "${{ vars.APP_NAME }}" \
             --slot staging \
-            --settings WEBSITES_PORT=${{ vars.PORT }}
-          az webapp restart --resource-group "${{ vars.RG_PROD }}" --name "${{ vars.APP_NAME }}" --slot staging
-          curl -f https://${{ vars.APP_NAME }}-staging.azurewebsites.net/healthz
+            --settings WEBSITES_PORT=${{ vars.PORT }} PORT=${{ vars.PORT }} WEBSITES_ENABLE_APP_SERVICE_STORAGE=false
+
+      - name: Restart STAGING
+        run: az webapp restart --resource-group "${{ vars.RG_PROD }}" --name "${{ vars.APP_NAME }}" --slot staging
+
+      - name: Health check (staging)
+        run: curl -f https://${{ vars.APP_NAME }}-staging.azurewebsites.net/healthz
 
   swap_to_prod:
     needs: deploy_staging
@@ -116,11 +125,13 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       - name: Swap staging -> production
         run: |
           az webapp deployment slot swap \
             --resource-group "${{ vars.RG_PROD }}" \
             --name "${{ vars.APP_NAME }}" \
             --slot staging --target-slot production
+
       - name: Post-swap health
         run: curl -f https://${{ vars.APP_NAME }}.azurewebsites.net/healthz
