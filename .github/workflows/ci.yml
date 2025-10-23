@@ -1,0 +1,116 @@
+name: CI-CD
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}
+          tags: |
+            type=sha,format=long
+            type=raw,value=latest
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+  deploy_test:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Point TEST to new image and set port
+        run: |
+          IMG="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}:${{ github.sha }}"
+          az webapp config container set \
+            --resource-group "${{ vars.RG_TEST }}" \
+            --name "${{ vars.APP_NAME }}-test" \
+            --docker-custom-image-name "$IMG"
+          az webapp config appsettings set \
+            --resource-group "${{ vars.RG_TEST }}" \
+            --name "${{ vars.APP_NAME }}-test" \
+            --settings WEBSITES_PORT=${{ vars.PORT }}
+          az webapp restart --resource-group "${{ vars.RG_TEST }}" --name "${{ vars.APP_NAME }}-test"
+          curl -f https://${{ vars.APP_NAME }}-test.azurewebsites.net/healthz
+
+  deploy_staging:
+    needs: deploy_test
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Point STAGING to new image and set port
+        run: |
+          IMG="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE }}:${{ github.sha }}"
+          az webapp config container set \
+            --resource-group "${{ vars.RG_PROD }}" \
+            --name "${{ vars.APP_NAME }}" \
+            --slot staging \
+            --docker-custom-image-name "$IMG"
+          az webapp config appsettings set \
+            --resource-group "${{ vars.RG_PROD }}" \
+            --name "${{ vars.APP_NAME }}" \
+            --slot staging \
+            --settings WEBSITES_PORT=${{ vars.PORT }}
+          az webapp restart --resource-group "${{ vars.RG_PROD }}" --name "${{ vars.APP_NAME }}" --slot staging
+          curl -f https://${{ vars.APP_NAME }}-staging.azurewebsites.net/healthz
+
+  swap_to_prod:
+    needs: deploy_staging
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Swap staging -> production
+        run: |
+          az webapp deployment slot swap \
+            --resource-group "${{ vars.RG_PROD }}" \
+            --name "${{ vars.APP_NAME }}" \
+            --slot staging --target-slot production
+      - name: Post-swap health
+        run: curl -f https://${{ vars.APP_NAME }}.azurewebsites.net/healthz
