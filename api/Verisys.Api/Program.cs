@@ -12,6 +12,13 @@ builder.Services.AddDbContext<AppDb>(o =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var defaultConnection = builder.Configuration.GetConnectionString("Default")
+    ?? Environment.GetEnvironmentVariable("ConnectionStrings__Default");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(defaultConnection));
+
+
 var app = builder.Build();
 
 // Swagger in Dev

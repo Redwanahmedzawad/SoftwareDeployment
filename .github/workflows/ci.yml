@@ -26,7 +26,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -55,45 +55,37 @@ jobs:
           az webapp config container set \
             --resource-group "${{ vars.RG_TEST }}" \
             --name "${{ vars.APP_NAME }}-test" \
-            --container-image-name "$IMG" \
-            --container-registry-url https://index.docker.io \
-            --container-registry-user "${{ secrets.DOCKERHUB_USERNAME }}" \
-            --container-registry-password "${{ secrets.DOCKERHUB_TOKEN }}"
+            --container-image-name "$IMG"
+            # For private repos, uncomment below:
+            # --container-registry-url https://index.docker.io \
+            # --container-registry-user "${{ secrets.DOCKERHUB_USERNAME }}" \
+            # --container-registry-password "${{ secrets.DOCKERHUB_TOKEN }}"
 
-      - name: Configure TEST app settings (port, binding, startup)
+      - name: Configure TEST app settings (DB + port)
         run: |
-          echo "Setting port to ${{ vars.PORT }}"
           az webapp config appsettings set \
             --resource-group "${{ vars.RG_TEST }}" \
             --name "${{ vars.APP_NAME }}-test" \
             --settings \
+              "ConnectionStrings__Default=${{ secrets.DB_CONNECTION_STRING }}" \
               WEBSITES_PORT=${{ vars.PORT }} \
               PORT=${{ vars.PORT }} \
-              ASPNETCORE_URLS=http://0.0.0.0:${{ vars.PORT }} \
-              WEBSITES_CONTAINER_START_TIME_LIMIT=600 \
+              ASPNETCORE_URLS="http://0.0.0.0:${{ vars.PORT }}" \
               WEBSITES_ENABLE_APP_SERVICE_STORAGE=false
-
-      - name: Enable container logging
-        run: |
-          az webapp log config \
-            --resource-group "${{ vars.RG_TEST }}" \
-            --name "${{ vars.APP_NAME }}-test" \
-            --docker-container-logging filesystem
 
       - name: Restart TEST
         run: az webapp restart --resource-group "${{ vars.RG_TEST }}" --name "${{ vars.APP_NAME }}-test"
 
-      - name: Wait for /healthz (retry up to 10 minutes)
+      - name: Health check (TEST)
         run: |
           URL="https://${{ vars.APP_NAME }}-test.azurewebsites.net/healthz"
-          for i in {1..120}; do
-            CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
-            echo "Attempt $i -> HTTP $CODE"
-            if [ "$CODE" = "200" ]; then exit 0; fi
+          for i in {1..30}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
+            echo "Attempt $i -> HTTP $code"
+            [ "$code" = "200" ] && exit 0
             sleep 5
           done
-          echo "Dumping recent logs..."
-          az webapp log tail --resource-group "${{ vars.RG_TEST }}" --name "${{ vars.APP_NAME }}-test" --timeout 10 || true
+          echo "Failed to reach 200 at $URL"
           exit 1
 
   deploy_staging:
@@ -120,38 +112,38 @@ jobs:
             --resource-group "${{ vars.RG_PROD }}" \
             --name "${{ vars.APP_NAME }}" \
             --slot staging \
-            --container-image-name "$IMG" \
-            --container-registry-url https://index.docker.io \
-            --container-registry-user "${{ secrets.DOCKERHUB_USERNAME }}" \
-            --container-registry-password "${{ secrets.DOCKERHUB_TOKEN }}"
+            --container-image-name "$IMG"
+            # For private repos, uncomment below:
+            # --container-registry-url https://index.docker.io \
+            # --container-registry-user "${{ secrets.DOCKERHUB_USERNAME }}" \
+            # --container-registry-password "${{ secrets.DOCKERHUB_TOKEN }}"
 
-      - name: Configure STAGING app settings (port, binding, startup)
+      - name: Configure STAGING app settings (DB + port)
         run: |
           az webapp config appsettings set \
             --resource-group "${{ vars.RG_PROD }}" \
             --name "${{ vars.APP_NAME }}" \
             --slot staging \
             --settings \
+              "ConnectionStrings__Default=${{ secrets.DB_CONNECTION_STRING }}" \
               WEBSITES_PORT=${{ vars.PORT }} \
               PORT=${{ vars.PORT }} \
-              ASPNETCORE_URLS=http://0.0.0.0:${{ vars.PORT }} \
-              WEBSITES_CONTAINER_START_TIME_LIMIT=600 \
+              ASPNETCORE_URLS="http://0.0.0.0:${{ vars.PORT }}" \
               WEBSITES_ENABLE_APP_SERVICE_STORAGE=false
 
       - name: Restart STAGING
         run: az webapp restart --resource-group "${{ vars.RG_PROD }}" --name "${{ vars.APP_NAME }}" --slot staging
 
-      - name: Wait for /healthz on STAGING (retry up to 10 minutes)
+      - name: Health check (STAGING)
         run: |
           URL="https://${{ vars.APP_NAME }}-staging.azurewebsites.net/healthz"
-          for i in {1..120}; do
-            CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
-            echo "Attempt $i -> HTTP $CODE"
-            if [ "$CODE" = "200" ]; then exit 0; fi
+          for i in {1..30}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
+            echo "Attempt $i -> HTTP $code"
+            [ "$code" = "200" ] && exit 0
             sleep 5
           done
-          echo "Dumping recent logs..."
-          az webapp log tail --resource-group "${{ vars.RG_PROD }}" --name "${{ vars.APP_NAME }}" --slot staging --timeout 10 || true
+          echo "Failed to reach 200 at $URL"
           exit 1
 
   swap_to_prod:
@@ -169,20 +161,21 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Swap staging -> production
+      - name: Swap STAGING → PRODUCTION
         run: |
           az webapp deployment slot swap \
             --resource-group "${{ vars.RG_PROD }}" \
             --name "${{ vars.APP_NAME }}" \
             --slot staging --target-slot production
 
-      - name: Post-swap health (retry up to 10 minutes)
+      - name: Post-swap health
         run: |
           URL="https://${{ vars.APP_NAME }}.azurewebsites.net/healthz"
-          for i in {1..120}; do
-            CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
-            echo "Attempt $i -> HTTP $CODE"
-            if [ "$CODE" = "200" ]; then exit 0; fi
+          for i in {1..30}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
+            echo "Attempt $i -> HTTP $code"
+            [ "$code" = "200" ] && exit 0
             sleep 5
           done
+          echo "Failed to reach 200 at $URL"
           exit 1
