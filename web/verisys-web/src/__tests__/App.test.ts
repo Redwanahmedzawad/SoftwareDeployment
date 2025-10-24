@@ -27,7 +27,7 @@ describe('App.vue', () => {
 
   it('renders the app header with title', () => {
     const wrapper = mount(App);
-    expect(wrapper.find('h1').text()).toBe('Verisys — Task Board');
+    expect(wrapper.find('h1').text()).toBe('Task Buddy');
   });
 
   it('renders the task input form', () => {
