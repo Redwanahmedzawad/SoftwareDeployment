@@ -16,7 +16,7 @@ services:
       retries: 10
 
   app:
-    # Uses your existing root Dockerfile
+    
     build:
       context: .           # repo root
       dockerfile: Dockerfile
